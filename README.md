@@ -37,7 +37,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/apisitas/API-Article.git`
 2. Install dependencies: `npm install`
-3. Configure the database connection in `.env` file (if required).
+3. Configure the database connection in `.env` file (if required) you can see env example file(.env.example).
 4. Run the migrations and seed the database (if applicable): `npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all`
 5. Start the server: `npm run server`
 6. The API should now be accessible at `http://localhost:5000`.
