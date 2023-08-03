@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
         {
             title: DataTypes.STRING,
             description: DataTypes.STRING,
+            cover: {
+                type: DataTypes.STRING,
+                get() {
+                    const cover = this.getDataValue("cover");
+                    return cover ? cover : "assets/no-image-icon-23494.png";
+                },
+            },
+            publisherId: DataTypes.INTEGER,
         },
         {
             sequelize,
