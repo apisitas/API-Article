@@ -1,17 +1,35 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
 const path = require("path");
 const {
     listAll,
+    show,
     create,
     update,
     remove,
 } = require("../controllers/articleController");
 
 const multer = require("multer");
+const uploadsDir = path.join(__dirname, "../public/uploads");
+fs.access(uploadsDir, (error) => {
+    if (error) {
+        fs.mkdir(uploadsDir, (error) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(
+                    "New Directory 'public/uploads' created successfully !!"
+                );
+            }
+        });
+    } else {
+        // console.log("Given Directory already exists !!");
+    }
+});
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "public/uploads");
+        cb(null, uploadsDir);
     },
     filename: function (req, file, cb) {
         const allowedExtensions = ["png", "jpeg", "jpg", "gif"];
@@ -33,6 +51,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.route("/").get(listAll);
+router.get("/:id", show); // Use the same upload middleware for update route
 router.post("/", (req, res, next) => {
     upload.single("cover")(req, res, (err) => {
         if (err) {

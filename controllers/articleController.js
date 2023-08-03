@@ -9,12 +9,47 @@ const listAll = asyncHandler(async (req, res) => {
     const { page, size } = req.query;
     const { limit, offset } = HelperFunctions.getPagination(page, size);
     const query = await Article.findAndCountAll({
+        include: [
+            {
+                model: Publisher,
+                as: "publisher",
+            },
+        ],
         limit,
         offset,
         order: [["id", "DESC"]],
     });
     const response = HelperFunctions.getPagingData(query, page, limit);
     return res.status(200).json({ success: response });
+});
+
+const show = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const queryCheckArticle = await Article.findOne({
+        where: {
+            id: id,
+        },
+        include: [
+            {
+                model: Publisher,
+                as: "publisher",
+            },
+        ],
+    });
+    if (!queryCheckArticle) {
+        return res
+            .status(404)
+            .json({ error: "Not found this Article in system" });
+    }
+    await Article.update(
+        { totalView: (queryCheckArticle.totalView += 1) },
+        {
+            where: {
+                id: id,
+            },
+        }
+    );
+    return res.status(200).json({ success: queryCheckArticle });
 });
 
 const create = asyncHandler(async (req, res) => {
@@ -52,14 +87,17 @@ const create = asyncHandler(async (req, res) => {
             .json({ error: "Not found this Publisher in system" });
     }
 
-    const query = await Article.create({
+    const queryCreated = await Article.create({
         title: req.body.title,
         description: req.body.description,
         publisherId: req.body.publisherId,
         cover: `uploads/${req.cover}`, // Use the extracted file name without the extension
     });
 
-    res.status(200).json(query);
+    if (queryCreated[0] === 0) {
+        return res.status(404).json({ error: "Article create failed" });
+    }
+    return res.status(200).json({ success: "Article created was a success" });
 });
 
 const update = asyncHandler(async (req, res) => {
@@ -137,6 +175,7 @@ const remove = asyncHandler(async (req, res) => {
 
 module.exports = {
     listAll,
+    show,
     create,
     update,
     remove,
