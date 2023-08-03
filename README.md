@@ -21,6 +21,7 @@ This repository contains a Node.js backend API for articles. It allows users to 
 -   Retrieve a single article by its ID.
 -   Update an existing article's title, description, and cover image.
 -   Delete an article by its ID.
+-   Validate object exist or not when create or update.
 
 ## Technologies
 
@@ -77,4 +78,4 @@ To run this project locally, follow these steps:
 
 -   **Endpoint**: `DELETE /api/articles/:id`
 -   **Description**: Delete an article by its ID (Backend will also remove that cover in server).
--   **Response**: JSON object indicating successful deletion.
+-   **Response**: JSON object and text 'Remove Article was a success'
