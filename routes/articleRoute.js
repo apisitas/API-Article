@@ -51,16 +51,23 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.route("/").get(listAll);
-router.get("/:id", show); // Use the same upload middleware for update route
+router.get("/:id", show);
 router.post("/", (req, res, next) => {
     upload.single("cover")(req, res, (err) => {
         if (err) {
             return res.status(err.status).json({ error: err.message });
         }
-        create(req, res); // Call the create controller function here after successful file upload
+        create(req, res);
     });
 });
-router.put("/:id", upload.single("cover"), update); // Use the same upload middleware for update route
+router.put("/:id", (req, res, next) => {
+    upload.single("cover")(req, res, (err) => {
+        if (err) {
+            return res.status(err.status).json({ error: err.message });
+        }
+        update(req, res);
+    });
+});
 
 router.route("/:id").delete(remove);
 

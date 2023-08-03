@@ -168,8 +168,7 @@ const remove = asyncHandler(async (req, res) => {
         fs.unlinkSync(`public/${queryCheckArticle.cover}`);
     }
     res.status(200).json({
-        success: true,
-        message: "Remove Article was a success",
+        success: "Remove Article was a success",
     });
 });
 

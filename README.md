@@ -38,9 +38,10 @@ To run this project locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/apisitas/API-Article.git`
 2. Install dependencies: `npm install`
 3. Configure the database connection in `.env` file (if required) you can see env example file(.env.example).
-4. Run the migrations and seed the database (if applicable): `npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all`
+4. Run the migrations and seed the database (if applicable): `npx sequelize-cli db:migrate ` then `npx sequelize-cli db:seed:all`
 5. Start the server: `npm run server`
 6. The API should now be accessible at `http://localhost:5000`.
+   if want see image you have to combine url and path togeter for example 'http://localhost:5000/uploads/1691079127824-churros-g89bd8c720_1280.jpg'
 
 ## API Endpoints
 
@@ -61,14 +62,14 @@ To run this project locally, follow these steps:
 ### Create Article
 
 -   **Endpoint**: `POST /api/articles`
--   **Description**: Create a new article.
+-   **Description**: Create a new article. (Only png, jpeg, jpg, and gif images are supported)
 -   **Request Body**: JSON object containing `title`, `description`, `cover` and `publisherId` fields.
 -   **Response**: JSON object and text 'Article created was a success'.
 
 ### Update Article
 
 -   **Endpoint**: `PUT /api/articles/:id`
--   **Description**: Update an existing article by its ID (If add new cover then backend will remove old cover).
+-   **Description**: Update an existing article by its ID (If add new cover then backend will remove old cover and Only png, jpeg, jpg, and gif images are supported).
 -   **Request Body**: JSON object containing `title`, `description`, `cover` and `publisherId` fields.
 -   **Response**: JSON object and text 'Article updated was a success'.
 
